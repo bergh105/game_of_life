@@ -12,8 +12,8 @@ class Cell
 		double popDensity;
 		int numCells;
 		int numNeighborsClassic(int **arr, int **arrB, size_t w, size_t h);
-		void ReadIn();
-		void turn(char **bA, char **bB);
+		int numNeighborDonut(int **arr, int **arrB, size_t w, size_t h);
+		int numNeighborMirror(int **arr, int **arrB, size_t w, size_t h);  
 		
 		
 		
