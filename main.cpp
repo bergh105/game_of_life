@@ -10,6 +10,7 @@ int main(int argc, char **argv) {
 	cin >> rows;
 	cout << "How many columns? " << endl;
 	cin >> columns;
+	bool flip;
 
 	int width, height;
 	//set width and height of board to account for border cells
@@ -17,11 +18,13 @@ int main(int argc, char **argv) {
 		width = columns+2;
 		height = rows+2;
 		cout << "Width: " << width << " Height: " << height << endl;
+		flip = true;
 	}
 	else if (rows > columns) {
 		width = rows+2;
 		height = columns+2;
 		cout << "Width: " << width << " Height: " << height << endl;
+		flip = false;
 	}
 	//create board
 	int** board = new int*[width];
