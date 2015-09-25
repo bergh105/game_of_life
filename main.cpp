@@ -11,6 +11,7 @@ int main(int argc, char **argv) {
 	Cell c;
 
 	int rows, columns;
+	bool flip = false;
 	cout << "How many rows? " << endl;
 	cin >> rows;
 	cout << "How many columns? " << endl;
@@ -24,11 +25,13 @@ int main(int argc, char **argv) {
 		width = columns+2;
 		height = rows+2;
 		cout << "Width: " << width << " Height: " << height << endl;
+		flip = true;
 	}
 	else if (rows > columns) {
 		width = rows+2;
 		height = columns+2;
 		cout << "Width: " << width << " Height: " << height << endl;
+		flip = false;
 	}
 	cout << "Width: " << width << " Height: " << height << endl;
 
