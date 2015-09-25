@@ -1,0 +1,17 @@
+Strategy idea:
+
+0=empty
+1=populated
+
+neighborCount = sum of all values of array indices neighboring current cell
+
+Border cells will be 0. All cells initialized to 0, then choose population density and add 1s to cells to be populated.
+Take user input for #rows, columns, then add 2 to each number to account for border rows/columns
+When iterating through, use int i=1, j=1 so that the first column and row are skipped. 
+Use i<(width-1), j<(height-1) so that the last column and row are skipped.
+
+Initialize all cells to be 0, then change the ones that should start as populated to 1.
+Add all values of indices neighboring the current cell to find the # of neighbors of that cell. (neighborCount)
+(Value of a populated cell's index will be 1, value of an empty cell will be 0)
+
+Doesnt work in practice tho..
