@@ -11,25 +11,30 @@ int main(int argc, char **argv) {
 	cout << "How many columns? " << endl;
 	cin >> columns;
 
+	int width, height;
 	//set width and height of board to account for border cells
-	int width = rows+2;
-	int height = columns+2;
-	cout << "Width: " << width << " Height: " << height << endl;
-
+	if(columns > rows) {
+		width = columns+2;
+		height = rows+2;
+		cout << "Width: " << width << " Height: " << height << endl;
+	}
+	else if (rows > columns) {
+		width = rows+2;
+		height = columns+2;
+		cout << "Width: " << width << " Height: " << height << endl;
+	}
 	//create board
 	int** board = new int*[width];
 	for(int i=0; i<width; ++i) {
 		board[i] = new int[height];
 	}
-
+	
 	//initialize all cells to empty
-	for (int i=0; i<width; ++i) {
-		for (int j=0; j<height; ++j) {
+	for (int i=0; i<height; ++i) {
+		for (int j=0; j<width; ++j) {
 			board[i][j] = 0;
 		}
 	}
-	
-	cout << "No segmentation error yet!" << endl;
 
 	//populate some cells (indices chosen randomly)
 	//in order for these indices to work, input 4 rows, 5 columns
@@ -37,31 +42,29 @@ int main(int argc, char **argv) {
 	board[1][4] = 1;
 	board[2][2] = 1;
 	board[2][4] = 1;
-	board[4][1] = 1;
-	board[4][2] = 1;
+	board[3][1] = 1;
+	board[3][2] = 1; 
 
-	//create copy board
+	//create copy board to populate next gen
 	int** boardB = new int*[width];
 	for(int i=0; i<width; ++i) {
 		boardB[i] = new int[height];
 	}
-	
-	cout << "No segmentation error yet!" << endl;
+	for (int i=0; i<height; ++i) {
+		for (int j=0; j<width; ++j) {
+			boardB[i][j] = 0;
+		}
+	}
+
 	//check neighbors, alter boardB accordingly
-
 	int neighborCount = 0;
-	
-	for(int i=1; i<width; ++i) {
-		for(int j=1; j<height; ++i) {
 
-			//this line causes segmentation fault (11) **probably too much memory being used
+	//1 so that first border column and row are skipped. width-1 so that last column skipped, height-1 so that last row skipped
+	for(int i=1; i<height-1; ++i) {
+		for(int j=1; j<width-1; ++j) {
+			
 			neighborCount = board[i-1][j] + board[i-1][j-1] + board[i-1][j+1] + board[i][j+1] + board[i][j-1] + board[i+1][j+1] + board[i+1][j] + board[i+1][j-1];
-			
-			//even just this causes segmentation fault: 11
-			if(board[i-1][j] == 1)
-				++neighborCount;
-
-			
+			cout << "neighbor count: " << neighborCount << endl;
 			if(neighborCount <2 || neighborCount >= 4) {
 				boardB[i][j] = 0;
 			}
@@ -86,11 +89,12 @@ int main(int argc, char **argv) {
 		}
 	}
 
-	//program produces runtime Segmentation Fault. Stack Overflow:
-	/*Segmentation fault is a specific kind of error caused by accessing memory that “does not belong to you.” 
-	It’s a helper mechanism that keeps you from corrupting the memory and introducing hard-to-debug memory bugs. 
-	Whenever you get a segfault you know you are doing something wrong with memory – accessing variable that has 
-	already been freed, writing to a read-only portion of the memory, etc. */
-
+	for (int i =0; i<height; ++i) {
+		delete [] board[i];
+		delete [] boardB[i];
+	}
+	delete [] board;
+	delete [] boardB;
+	
 	return 0;
 }
