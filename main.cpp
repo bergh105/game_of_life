@@ -55,7 +55,7 @@ int main(int argc, char **argv) {
 		for(int j=1; j<height; ++i) {
 
 			//this line causes segmentation fault (11) **probably too much memory being used
-			//neighborCount = board[i-1][j] + board[i-1][j-1] + board[i-1][j+1] + board[i][j+1] + board[i][j-1] + board[i+1][j+1] + board[i+1][j] + board[i+1][j-1];
+			neighborCount = board[i-1][j] + board[i-1][j-1] + board[i-1][j+1] + board[i][j+1] + board[i][j-1] + board[i+1][j+1] + board[i+1][j] + board[i+1][j-1];
 			
 			//even just this causes segmentation fault: 11
 			if(board[i-1][j] == 1)
@@ -86,7 +86,7 @@ int main(int argc, char **argv) {
 		}
 	}
 
-	//this program produces runtime Segmentation Fault. 
+	//program produces runtime Segmentation Fault. Stack Overflow:
 	/*Segmentation fault is a specific kind of error caused by accessing memory that “does not belong to you.” 
 	It’s a helper mechanism that keeps you from corrupting the memory and introducing hard-to-debug memory bugs. 
 	Whenever you get a segfault you know you are doing something wrong with memory – accessing variable that has 
