@@ -63,7 +63,7 @@ int main(int argc, char **argv) {
 	cout << "No segmentation error yet!" << endl;
 	//check neighbors, alter boardB accordingly
 	
-	c.numNeighbors(board, boardB, width, height);
+	c.numNeighborsClassic(board, boardB, width, height);
 	
 	//print values of all indexes of boardB to check
 	for (int i=0; i<width; ++i) {
