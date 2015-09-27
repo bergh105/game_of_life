@@ -59,33 +59,27 @@ int Cell::numNeighborsClassic(int **arr, int **arrB, size_t w, size_t h)
 void Cell::initialPop(int **arr, int w, int h, double d) {
 
 	int totalCells = (h-2)*(w-2);
-	cout << "total cells: " << totalCells << endl;
+	//calc how many cells should end up being populated given chosen pop density
+	double totalPopulatedCells = totalCells*d;
 
-	int totalPopulatedCells = totalCells*d;
-	cout << "total populated cells should be: " << totalPopulatedCells << endl;
+	int popCells = (int)totalPopulatedCells;
+	int count = 0;
 
-	//counter for number of cells that have been populated by function
-	int popCells = 0;
+		for (int i=1; i<(h-1); ++i) {
+			for(int j=1; j<(w-1); ++j) {
 
-	for (int i=1; i<(h-1); ++i) {
-		cout << "Iteration: " << i << endl;
-		for(int j=1; j<(w-1); ++j) {
-
-			while(!(popCells == totalPopulatedCells)) {
 				double a = rand() / (RAND_MAX + 1.0);
-				cout << "Iteration J: " << j << ": a= " << a << endl;
-				if (d >= a) {
-					cout << "Populate." << endl;
-					++popCells;
+				if (0<a && a<=d) {
+					arr[i][j] = 1;
+					count += 1;
+					//end population process once desired population is reached
+					if (popCells == count) {
+						break;
+					}
 				}
-				else
-					cout << "Leave empty." << endl;
 			}
-			//works but stops populating when desired pop density is reached
-			//means that the last several cells will automatically be empty, not even in the running to be populated
-			//not *exactly* random
-			
+			if(popCells == count)
+				break;
 		}
-	}
-
 }
+
