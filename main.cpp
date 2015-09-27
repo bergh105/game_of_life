@@ -27,7 +27,7 @@ int main(int argc, char **argv) {
 		
 		int width, height;
 		//set width and height of board to account for border cells
-		if(columns > rows) {
+		if(columns >= rows) {
 			width = columns+2;
 			height = rows+2;
 			cout << "Width: " << width << " Height: " << height << endl;
@@ -37,7 +37,6 @@ int main(int argc, char **argv) {
 			height = columns+2;
 			cout << "Width: " << width << " Height: " << height << endl;
 		}
-		cout << "Width: " << width << " Height: " << height << endl;
 
 		//create board
 		int** board = new int*[width];
@@ -64,13 +63,11 @@ int main(int argc, char **argv) {
 			cin >> popD;
 		}
 	
+		//populate cells
 		c.initialPop(board, width, height, popD);
 
 	
 		cout << "No segmentation error yet!" << endl;
-
-		//populate some cells (indices chosen randomly)
-		//in order for these indices to work, input 4 rows, 5 columns
 		
 		//create copy board
 		int** boardB = new int*[width];
@@ -80,14 +77,14 @@ int main(int argc, char **argv) {
 		
 		//check neighbors, alter boardB accordingly
 		
-		//c.numNeighborsClassic(board, boardB, width, height);
+		c.numNeighborsClassic(board, boardB, width, height);
 		
-		/*print values of all indexes of boardB to check
+		//print values of all indexes of boardB to check
 		for (int i=0; i<width; ++i) {
 			for (int j=0; j<height; ++j) {
 				cout << boardB[i][j] << endl;
 			}
-		}*/
+		}
 
 		//Delete arrays to prevent Segmentation Fault	
 		for (int i = 0; i<height; ++i)
