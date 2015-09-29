@@ -1,65 +1,72 @@
 #include <iostream>
 #include <string>
+#include <fstream>
+
 #include <math.h>
 #include <stdlib.h>
-#include <fstream>
 #include "Cell.h"
 
 using namespace std;
 
 Cell::Cell()
 {
-	//cout << "hi guys";
+	cout << "hi guys" << endl;
 }
 Cell::~Cell()
 {
-	
+	cout << "destroyed" << endl;
 
 }
-void Cell::Quit()
-{
+
+void Cell::Quit() {
 	bool hey = true;
 	string input;
-	cout << "press 'enter' to terminate program"<< endl;
-	while(getline(cin,input))
-	{
-		
+	cout << "Game has stabilized. Press 'enter' key to terminate program." << endl;
+	while(getline(cin, input)) {
 		if (input.empty())
 			break;
 	}
 }
 
-void Cell::printConsole(int **arrB, int w, int h)
-{
+void Cell::printConsole(int **arrB, int w, int h) {
+
 	string gogo;
-	cout << "press 'enter' to continue"<<endl;
-	getline(cin,gogo);
-	for (int i=1; i < w-1; ++i) {
-		for (int j=1; j< h-1 ; ++j) {
+	cout << "Press 'enter' key to continue to next generation." << endl;
+	getline(cin, gogo);
+	for(int i=1; i < (w-1); ++i) {
+		for(int j=1; j < (h-1); ++j) {
 			cout << arrB[i][j];
 		}
 		cout << endl;
-		
 	}
 	cout << endl;
 }
 
-void Cell::printFlipConsole(int **arrB, int w, int h)
-{
+void Cell::printFlipConsole(int **arrB, int w, int h) {
+
 	string gogo;
-	cout << "press 'enter' to continue"<<endl;
-	getline(cin,gogo);
-	for (int i=1; i < w-1; ++i) {
-		for (int j=1; j< h-1 ; ++j) {
+	cout << "Press 'enter' key to continue." << endl;
+	getline(cin, gogo);
+	for(int i=1; i < (w-1); ++i) {
+		for (int j=1; j < (h-1); ++j) {
 			cout << arrB[j][i];
 		}
 		cout << endl;
-		
 	}
 	cout << endl;
 }
 
-void Cell::numNeighborsClassic(int **arr, int **arrB, int w, int h)
+void Cell::printFile(int **arrB, int w, int h)
+{
+	// prints to file
+}
+
+void Cell::printFlipFile(int **arrB, int w, int h)
+{
+	// print to file flipped
+}
+
+void Cell::numNeighborsClassic(int **arr, int **arrB, int w, int h, bool fType, bool out)
 {
 	int neighborCount = 0;
 	int stableCount = 0;
@@ -96,13 +103,20 @@ void Cell::numNeighborsClassic(int **arr, int **arrB, int w, int h)
 	
 		
 	
-	if (!stable){
-		printConsole(arrB,w,h);
-		numNeighborsClassic(arrB, arr, w, h);
+	if(!stable){
+		
+		if(fType) {
+			printConsole(arrB,w,h);
+		}
+		else if (!fType){
+			printFlipConsole(arrB,w,h);
+		}
+	
+		numNeighborsClassic(arrB, arr, w, h, fType, out);
 	}
 }
 
-void Cell::numNeighborsDonut(int **arr, int **arrB, int w, int h)
+void Cell::numNeighborsDonut(int **arr, int **arrB, int w, int h, bool fType, bool out)
 {
 	//edges find neighbors on the opposite side of the board
 	int neighborCount = 0;
@@ -171,13 +185,20 @@ void Cell::numNeighborsDonut(int **arr, int **arrB, int w, int h)
 		stable = true;
 	
 	if(!stable){
-		printConsole(arrB,w,h);
-		numNeighborsDonut(arrB,arr,w,h);
+		
+		if(fType) {
+			printConsole(arrB,w,h);
+		}
+		else if (!fType){
+			printFlipConsole(arrB,w,h);
+		}
+	
+		numNeighborsDonut(arrB,arr,w,h, fType, out);
 	}
 		
 }
 
-void Cell::numNeighborsMirror(int **arr, int **arrB, int w, int h)
+void Cell::numNeighborsMirror(int **arr, int **arrB, int w, int h, bool fType, bool out)
 {
 	//edges find neighbors on the opposite side of the board
 	int neighborCount = 0;
@@ -246,8 +267,17 @@ void Cell::numNeighborsMirror(int **arr, int **arrB, int w, int h)
 		stable = true;
 	
 	if(!stable){
-		printConsole(arrB,w,h);
-		numNeighborsDonut(arrB,arr,w,h);
+		
+		if(fType) {
+			printConsole(arrB,w,h);
+		}
+		else if (!fType){
+			printFlipConsole(arrB,w,h);
+		}
+	
+			
+		
+		numNeighborsDonut(arrB,arr,w,h, fType, out);
 	}
 		
 	
@@ -280,4 +310,52 @@ void Cell::initialPop(int **arr, int w, int h, double d) {
 		}
 }
 
+void Cell::initialPop_file(int **arr, const char* fileName) {
+
+	ifstream file(fileName);
+	//file.open(fileName);
+
+	string titleLine1,titleLine2;
+	getline(file, titleLine1);
+	getline(file, titleLine2);
+
+	//read in file lines
+	string line1, line2, line3, line4, line5;
+	getline(file, line1);
+	getline(file, line2);
+	getline(file, line3);
+	getline(file, line4);
+	getline(file, line5);
+	for(int i=0; i<line1.length(); ++i) {
+		if(line1[i] == 'X'){
+			arr[1][i] = 1;
+		}
+		//cout << arr[1][i] << endl;
+	}
+	for(int i=0; i<line2.length(); ++i) {
+		if(line2[i] == 'X') {
+			arr[2][i] = 1;
+		}
+		//cout << arr[2][i] << endl;
+	}
+	for(int i=0; i<line3.length(); ++i) {
+		if(line2[i] == 'X') {
+			arr[3][i] = 1;
+		}
+		//cout << arr[3][i] << endl;
+	}
+	for(int i=0; i<line4.length(); ++i) {
+		if(line2[i] == 'X') {
+			arr[4][i] = 1;
+		}
+		//cout << arr[4][i] << endl;
+	}
+	for(int i=0; i<line5.length(); ++i) {
+		if(line2[i] == 'X') {
+			arr[5][i] = 1;
+		}
+		//cout << arr[5][i] << endl;
+	}
+	file.close();
+} 
 
