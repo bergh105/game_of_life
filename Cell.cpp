@@ -58,12 +58,12 @@ void Cell::printFlipConsole(int **arrB, int w, int h) {
 
 void Cell::printFile(int **arrB, int w, int h)
 {
-	// prints to file
+	cout << "print to file is a work in progress" << endl;
 }
 
 void Cell::printFlipFile(int **arrB, int w, int h)
 {
-	// print to file flipped
+	cout << "workin on it" << endl;
 }
 
 void Cell::numNeighborsClassic(int **arr, int **arrB, int w, int h, bool fType, bool out)
@@ -104,14 +104,22 @@ void Cell::numNeighborsClassic(int **arr, int **arrB, int w, int h, bool fType, 
 		
 	
 	if(!stable){
-		
-		if(fType) {
-			printConsole(arrB,w,h);
+		if(!out){	
+			if(fType) {
+				printConsole(arrB,w,h);
+			}
+			else if (!fType){
+				printFlipConsole(arrB,w,h);
+			}
 		}
-		else if (!fType){
-			printFlipConsole(arrB,w,h);
+		else if (out) {
+			if(fType) {
+				printFile(arrB,w,h);
+			}
+			else if (!fType){
+				printFlipFile(arrB,w,h);
+			}
 		}
-	
 		numNeighborsClassic(arrB, arr, w, h, fType, out);
 	}
 }
