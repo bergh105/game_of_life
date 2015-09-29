@@ -83,28 +83,34 @@ int main(int argc, char **argv) {
 
 		c.initialPop_file(board, fileName);
 		file.close();
-		/*string outputT;
+		string outputT;
 		cout << "how would you like your output(file/console) "<<endl;
-		while(getline(cin,outputT)){;
+		while(getline(cin,outputT)){
 			if(outputT == "file") {
 				outT = true;
+				break;
 			}
 			else if(outputT == "console") {
 				outT = false;
+				break;
 			}
-		}*/
+		}
 		cout << "what rules do you want to play by? (classic/donut/mirror) " << endl;
 		string boardType;
-		getline(cin,boardType);
-		if (boardType == "mirror") {
-
-			c.numNeighborsMirror(board, boardB, width, height, flipType, outT);
-		}
-		if(boardType == "classic") {
-			c.numNeighborsClassic(board, boardB, width, height, flipType, outT);
-		}
-		if(boardType == "donut") {
-			c.numNeighborsDonut(board, boardB, width, height, flipType, outT);
+		while(getline(cin,boardType)) {
+			if (boardType == "mirror") {
+	
+				c.numNeighborsMirror(board, boardB, width, height, flipType, outT);
+				break;
+			}
+			if(boardType == "classic") {
+				c.numNeighborsClassic(board, boardB, width, height, flipType, outT);
+				break;
+			}
+			if(boardType == "donut") {
+				c.numNeighborsDonut(board, boardB, width, height, flipType, outT);
+				break;
+			}
 		}
 		for (int i = 0; i<height; ++i)
 		{		
@@ -113,6 +119,15 @@ int main(int argc, char **argv) {
 		}
 		delete board;
 		delete boardB;
+
+		if(!outT){
+			string input;
+			cout << "Game has stabilized. Press 'enter' key to terminate program." << endl;
+			while(getline(cin, input)) {
+				if (input.empty())
+					break; 
+			}
+		}
 
 		
 	}
@@ -179,30 +194,36 @@ int main(int argc, char **argv) {
 		} 
 		
 		//check neighbors, alter boardB accordingly
-		/*string outputT;
+		string outputT;
 		cout << "how would you like your output(file/console) "<<endl;
-		while(getline(cin,outputT)){;
+		while(getline(cin,outputT)){
 			if(outputT == "file") {
 				outT = true;
+				break;
 			}
 			else if(outputT == "console") {
 				outT = false;
+				break;			
 			}
-		}*/
+		}
 		cout << "what rules do you want to play by? (classic/donut/mirror) " << endl;
 		string boardType;
 		while(getline(cin,boardType)){
 			if (boardType == "mirror") {
 	
 				c.numNeighborsMirror(board, boardB, width, height, flipType, outT);
+				break;
 			}
 			if(boardType == "classic") {
 				c.numNeighborsClassic(board, boardB, width, height, flipType, outT);
+				break;
 			}
 			if(boardType == "donut") {
 				c.numNeighborsDonut(board, boardB, width, height, flipType, outT);
+				break;
 			}
 		}
+		
 		//c.numNeighborsDonut(board, boardB, width, height);
 		//c.numNeighborsClassic(board, boardB, width, height);
 		
@@ -221,13 +242,15 @@ int main(int argc, char **argv) {
 		}
 		delete board;
 		delete boardB;
-
+		
 		//c.Quit();
-		string input;
-		cout << "Game has stabilized. Press 'enter' key to terminate program." << endl;
-		while(getline(cin, input)) {
-			if (input.empty())
-				break; 
+		if(!outT){
+			string input;
+			cout << "Game has stabilized. Press 'enter' key to terminate program." << endl;
+			while(getline(cin, input)) {
+				if (input.empty())
+					break; 
+			}
 		}
 
 	}
@@ -238,5 +261,4 @@ int main(int argc, char **argv) {
 
 	return 0;
 }
-
 
