@@ -1,21 +1,15 @@
 #include <iostream>
 #include <string>
 #include <fstream>
-
 #include <math.h>
 #include <stdlib.h>
 #include "Cell.h"
 
 using namespace std;
 
-Cell::Cell()
-{
-	cout << "hi guys" << endl;
+Cell::Cell(){
 }
-Cell::~Cell()
-{
-	cout << "destroyed" << endl;
-
+Cell::~Cell(){
 }
 
 void Cell::Quit() {
@@ -67,8 +61,7 @@ void Cell::printFlipConsole(int **arrB, int w, int h) {
 	cout << endl;
 }
 
-void Cell::printFile(int **arrB, int w, int h, bool looping)
-{	
+void Cell::printFile(int **arrB, int w, int h, bool looping) {	
 	ofstream myFile;
 	if (looping)
 		myFile.open("output.txt", ios_base::app);
@@ -92,8 +85,7 @@ void Cell::printFile(int **arrB, int w, int h, bool looping)
 	
 }
 
-void Cell::printFlipFile(int **arrB, int w, int h, bool looping)
-{
+void Cell::printFlipFile(int **arrB, int w, int h, bool looping) {
 	ofstream myFile;
 	if (looping)
 		myFile.open("output.txt", ios_base::app);
@@ -114,20 +106,14 @@ void Cell::printFlipFile(int **arrB, int w, int h, bool looping)
 	myFile << endl;
 	
 	myFile.close();
-	
-	
 }
 
-
-void Cell::numNeighborsClassic(int **arr, int **arrB, int w, int h, bool fType, bool out,bool Loop)
-{
+void Cell::numNeighborsClassic(int **arr, int **arrB, int w, int h, bool fType, bool out,bool Loop) {
 	int neighborCount = 0;
 	int stableCount = 0;
 	bool stable = false;
 
-	
 	for(int i=1; i<(w-1); ++i) {
-		
 		for(int j=1; j<(h-1); ++j) {
 			// looks at all surounding cells and counts the number of neighbors
 			neighborCount = arr[i-1][j] + arr[i-1][j-1] + arr[i-1][j+1] + arr[i][j+1] + arr[i][j-1] + arr[i+1][j+1] + arr[i+1][j] + arr[i+1][j-1];
@@ -149,16 +135,13 @@ void Cell::numNeighborsClassic(int **arr, int **arrB, int w, int h, bool fType, 
 				stableCount++;
 			
 			neighborCount = 0;
-			
 		}
 	}
+	
 	if (stableCount == 0){
 		stable = true;
-		
 	}
 
-	
-		
 	if(!stable){
 		if(!out){	
 			if(fType) {
@@ -178,18 +161,15 @@ void Cell::numNeighborsClassic(int **arr, int **arrB, int w, int h, bool fType, 
 		}
 		numNeighborsClassic(arrB,arr,w,h, fType, out, true);
 		
-		
 	}
 }
 
-void Cell::numNeighborsDonut(int **arr, int **arrB, int w, int h, bool fType, bool out, bool Loop)
-{
+void Cell::numNeighborsDonut(int **arr, int **arrB, int w, int h, bool fType, bool out, bool Loop) {
 	//edges find neighbors on the opposite side of the board
 	int neighborCount = 0;
 	int stableCount = 0;
 	bool stable = false;
 	for(int i=1; i<(w-1); ++i) {
-		
 		for(int j=1; j<(h-1); ++j) { 
 			//corner 1			
 			if( i == 1 && j == 1) {
@@ -244,7 +224,6 @@ void Cell::numNeighborsDonut(int **arr, int **arrB, int w, int h, bool fType, bo
 			if (arr[i][j] != arrB[i][j])
 				stableCount++;
 			neighborCount = 0;
-			
 		}
 	}
 	if (stableCount == 0)
@@ -268,20 +247,15 @@ void Cell::numNeighborsDonut(int **arr, int **arrB, int w, int h, bool fType, bo
 			}
 		}
 		numNeighborsDonut(arrB,arr,w,h, fType, out, true);
-		
-		
 	}
-		
 }
 
-void Cell::numNeighborsMirror(int **arr, int **arrB, int w, int h, bool fType, bool out, bool Loop)
-{
+void Cell::numNeighborsMirror(int **arr, int **arrB, int w, int h, bool fType, bool out, bool Loop){
 	//edges find neighbors on the opposite side of the board
 	int neighborCount = 0;
 	int stableCount = 0;
 	bool stable = false;
 	for(int i=1; i<(w-1); ++i) {
-		
 		for(int j=1; j<(h-1); ++j) { 
 			//corner 1			
 			if( i == 1 && j == 1) {
@@ -336,7 +310,6 @@ void Cell::numNeighborsMirror(int **arr, int **arrB, int w, int h, bool fType, b
 			if (arr[i][j] != arrB[i][j])
 				stableCount++;
 			neighborCount = 0;
-			
 		}
 	}
 	if (stableCount == 0)
@@ -360,13 +333,8 @@ void Cell::numNeighborsMirror(int **arr, int **arrB, int w, int h, bool fType, b
 			}
 		}
 		numNeighborsMirror(arrB,arr,w,h, fType, out, true);
-		
-		
 	}
-		
-	
 }
-
 
 void Cell::initialPop(int **arr, int w, int h, double d) {
 
