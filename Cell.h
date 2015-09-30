@@ -1,11 +1,8 @@
 #include <iostream>
 
-
-
 using namespace std;
 
-class Cell
-{
+class Cell {
 	public:
 		Cell();
 		virtual ~Cell();
@@ -13,9 +10,6 @@ class Cell
 		double popDensity;
 		int numCells;
 		
-		
-		
-
 		void Quit();
 		void printFlipConsole(int **arrB, int w, int h);
 		void printConsole(int **arrB, int w, int h);
