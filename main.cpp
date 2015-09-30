@@ -2,11 +2,8 @@
 #include <string>
 #include <math.h>
 #include <fstream>
-
 #include <stdlib.h>
-//#include <array>
 #include "Cell.h"
-
 
 using namespace std;
 
@@ -43,7 +40,6 @@ int main(int argc, char **argv) {
 			const char* fileName = fileN.c_str();
 			file.open(fileName);
 		}
-		//cout << "File is open." <<endl;
 
 		//set height and width (1st and second lines of file, respectively)
 		int rows, columns;
@@ -89,7 +85,7 @@ int main(int argc, char **argv) {
 		c.initialPop_file(board, fileName);
 		file.close();
 		string outputT;
-		cout << "how would you like your output(file/console) "<<endl;
+		cout << "How would you like your output? (file/console) " << endl;
 		while(getline(cin,outputT)){
 			if(outputT == "file") {
 				outT = true;
@@ -100,11 +96,10 @@ int main(int argc, char **argv) {
 				break;
 			}
 		}
-		cout << "what rules do you want to play by? (classic/donut/mirror) " << endl;
+		cout << "What rules do you want to play by? (classic/donut/mirror) " << endl;
 		string boardType;
 		while(getline(cin,boardType)) {
 			if (boardType == "mirror") {
-	
 				c.numNeighborsMirror(board, boardB, width, height, flipType, outT, false);
 				break;
 			}
@@ -117,8 +112,7 @@ int main(int argc, char **argv) {
 				break;
 			}
 		}
-		for (int i = 0; i<height; ++i)
-		{		
+		for (int i = 0; i<height; ++i) {		
 			delete board[i];
 			delete boardB[i];	
 		}
@@ -133,8 +127,6 @@ int main(int argc, char **argv) {
 					break; 
 			}
 		}
-
-		
 	}
 
 	else if(response == "random") {
@@ -188,9 +180,6 @@ int main(int argc, char **argv) {
 	
 		//populate cells
 		c.initialPop(board, width, height, popD);
-
-	
-		//cout << "No segmentation error yet!" << endl;
 		
 		//create copy board
 		int** boardB = new int*[width];
@@ -200,7 +189,7 @@ int main(int argc, char **argv) {
 		
 		//check neighbors, alter boardB accordingly
 		string outputT;
-		cout << "how would you like your output(file/console) "<<endl;
+		cout << "How would you like your output? (file/console)" << endl;
 		while(getline(cin,outputT)){
 			if(outputT == "file") {
 				outT = true;
@@ -211,11 +200,12 @@ int main(int argc, char **argv) {
 				break;			
 			}
 		}
-		cout << "what rules do you want to play by? (classic/donut/mirror) " << endl;
+		
+		cout << "What rules do you want to play by? (classic/donut/mirror) " << endl;
+		
 		string boardType;
 		while(getline(cin,boardType)){
 			if (boardType == "mirror") {
-	
 				c.numNeighborsMirror(board, boardB, width, height, flipType, outT, false);
 				break;
 			}
@@ -231,13 +221,7 @@ int main(int argc, char **argv) {
 		
 		//c.numNeighborsDonut(board, boardB, width, height);
 		//c.numNeighborsClassic(board, boardB, width, height);
-		
-		//print values of all indexes of boardB to check
-		/*for (int i=0; i<width; ++i) {
-			for (int j=0; j<height; ++j) {
-				cout << boardB[i][j] << endl;
-			}
-		}*/
+
 
 		//Delete arrays to prevent Segmentation Fault	
 		for (int i = 0; i<height; ++i)
