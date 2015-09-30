@@ -19,6 +19,11 @@ int main(int argc, char **argv) {
 
 	string response;
 	getline(cin, response);
+	
+	while(!(response == "map" || response == "random")) {
+		cout << "Please type either 'random' or 'map': " << endl;
+		getline(cin, response);
+	}
 
 	if(response == "map") {
 
