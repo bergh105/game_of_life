@@ -323,47 +323,28 @@ void Cell::initialPop_file(int **arr, const char* fileName) {
 	ifstream file(fileName);
 	//file.open(fileName);
 
+	//first two lines of file will be height and width specification
 	string titleLine1,titleLine2;
 	getline(file, titleLine1);
 	getline(file, titleLine2);
 
-	//read in file lines
-	string line1, line2, line3, line4, line5;
-	getline(file, line1);
-	getline(file, line2);
-	getline(file, line3);
-	getline(file, line4);
-	getline(file, line5);
-	for(int i=0; i<line1.length(); ++i) {
-		if(line1[i] == 'X'){
-			arr[1][i] = 1;
+	//read in file lines, populate where Xs appear
+	string line;
+	int lineNumber = 1;
+
+	while(!file.eof()) {
+		getline(file, line);
+		for(int i=0; i<line.length(); ++i) {
+			if(line[i] == 'X') {
+				arr[lineNumber][i] = 1;
+			}
+			cout << arr[lineNumber][i];
 		}
-		//cout << arr[1][i] << endl;
+		cout << endl;
+		++lineNumber;
+		cout << lineNumber << endl;
 	}
-	for(int i=0; i<line2.length(); ++i) {
-		if(line2[i] == 'X') {
-			arr[2][i] = 1;
-		}
-		//cout << arr[2][i] << endl;
-	}
-	for(int i=0; i<line3.length(); ++i) {
-		if(line2[i] == 'X') {
-			arr[3][i] = 1;
-		}
-		//cout << arr[3][i] << endl;
-	}
-	for(int i=0; i<line4.length(); ++i) {
-		if(line2[i] == 'X') {
-			arr[4][i] = 1;
-		}
-		//cout << arr[4][i] << endl;
-	}
-	for(int i=0; i<line5.length(); ++i) {
-		if(line2[i] == 'X') {
-			arr[5][i] = 1;
-		}
-		//cout << arr[5][i] << endl;
-	}
+
 	file.close();
 } 
 
