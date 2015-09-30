@@ -105,15 +105,15 @@ int main(int argc, char **argv) {
 		while(getline(cin,boardType)) {
 			if (boardType == "mirror") {
 	
-				c.numNeighborsMirror(board, boardB, width, height, flipType, outT);
+				c.numNeighborsMirror(board, boardB, width, height, flipType, outT, false);
 				break;
 			}
 			if(boardType == "classic") {
-				c.numNeighborsClassic(board, boardB, width, height, flipType, outT);
+				c.numNeighborsClassic(board, boardB, width, height, flipType, outT, false);
 				break;
 			}
 			if(boardType == "donut") {
-				c.numNeighborsDonut(board, boardB, width, height, flipType, outT);
+				c.numNeighborsDonut(board, boardB, width, height, flipType, outT, false);
 				break;
 			}
 		}
@@ -216,15 +216,15 @@ int main(int argc, char **argv) {
 		while(getline(cin,boardType)){
 			if (boardType == "mirror") {
 	
-				c.numNeighborsMirror(board, boardB, width, height, flipType, outT);
+				c.numNeighborsMirror(board, boardB, width, height, flipType, outT, false);
 				break;
 			}
 			if(boardType == "classic") {
-				c.numNeighborsClassic(board, boardB, width, height, flipType, outT);
+				c.numNeighborsClassic(board, boardB, width, height, flipType, outT, false);
 				break;
 			}
 			if(boardType == "donut") {
-				c.numNeighborsDonut(board, boardB, width, height, flipType, outT);
+				c.numNeighborsDonut(board, boardB, width, height, flipType, outT, false);
 				break;
 			}
 		}
