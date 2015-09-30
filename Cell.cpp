@@ -31,11 +31,17 @@ void Cell::Quit() {
 void Cell::printConsole(int **arrB, int w, int h) {
 
 	string gogo;
+	int bvar;
 	cout << "Press 'enter' key to continue to next generation." << endl;
 	getline(cin, gogo);
 	for(int i=1; i < (w-1); ++i) {
 		for(int j=1; j < (h-1); ++j) {
-			cout << arrB[i][j];
+			if(arrB[i][j] == 1) {
+				cout << 'X';
+			}
+			else if (arrB[i][j] == 0) {
+				cout << '-';
+			}
 		}
 		cout << endl;
 	}
@@ -43,34 +49,83 @@ void Cell::printConsole(int **arrB, int w, int h) {
 }
 
 void Cell::printFlipConsole(int **arrB, int w, int h) {
-
+	int bvar;
 	string gogo;
 	cout << "Press 'enter' key to continue." << endl;
 	getline(cin, gogo);
-	for(int i=1; i < (w-1); ++i) {
-		for (int j=1; j < (h-1); ++j) {
-			cout << arrB[j][i];
+	for(int i=1; i < (h-1); ++i) {
+		for (int j=1; j < (w-1); ++j) {
+			if(arrB[j][i] == 1) {
+				cout << 'X';
+			}
+			else if (arrB[j][i] == 0) {
+				cout << '-';
+			}
 		}
 		cout << endl;
 	}
 	cout << endl;
 }
 
-void Cell::printFile(int **arrB, int w, int h)
-{
-	cout << "print to file is a work in progress" << endl;
+void Cell::printFile(int **arrB, int w, int h, bool looping)
+{	
+	ofstream myFile;
+	if (looping)
+		myFile.open("output.txt", ios_base::app);
+	if(!looping)
+		myFile.open("output.txt");
+	
+	for(int i=1; i < (w-1); ++i) {
+		for (int j=1; j < (h-1); ++j) {
+			if(arrB[i][j] == 1) {
+				myFile << 'X';
+			}
+			else if (arrB[i][j] == 0) {
+				myFile << '-';
+			}
+		}
+		myFile << endl;
+	}
+	myFile << endl;
+	
+	myFile.close();
+	
 }
 
-void Cell::printFlipFile(int **arrB, int w, int h)
+void Cell::printFlipFile(int **arrB, int w, int h, bool looping)
 {
-	cout << "workin on it" << endl;
+	ofstream myFile;
+	if (looping)
+		myFile.open("output.txt", ios_base::app);
+	if(!looping)
+		myFile.open("output.txt");
+	
+	for(int i=1; i < (h-1); ++i) {
+		for (int j=1; j < (w-1); ++j) {
+			if(arrB[j][i] == 1) {
+				myFile << 'X';
+			}
+			else if (arrB[j][i] == 0) {
+				myFile << '-';
+			}
+		}
+		myFile << endl;
+	}
+	myFile << endl;
+	
+	myFile.close();
+	
+	
 }
 
-void Cell::numNeighborsClassic(int **arr, int **arrB, int w, int h, bool fType, bool out)
+
+void Cell::numNeighborsClassic(int **arr, int **arrB, int w, int h, bool fType, bool out,bool Loop)
 {
 	int neighborCount = 0;
 	int stableCount = 0;
 	bool stable = false;
+
+	
 	for(int i=1; i<(w-1); ++i) {
 		
 		for(int j=1; j<(h-1); ++j) {
@@ -97,12 +152,13 @@ void Cell::numNeighborsClassic(int **arr, int **arrB, int w, int h, bool fType, 
 			
 		}
 	}
-	if (stableCount == 0)
+	if (stableCount == 0){
 		stable = true;
+		
+	}
 
 	
 		
-	
 	if(!stable){
 		if(!out){	
 			if(fType) {
@@ -114,17 +170,19 @@ void Cell::numNeighborsClassic(int **arr, int **arrB, int w, int h, bool fType, 
 		}
 		else if (out) {
 			if(fType) {
-				printFile(arrB,w,h);
+				printFile(arrB,w,h, Loop);
 			}
 			else if (!fType){
-				printFlipFile(arrB,w,h);
+				printFlipFile(arrB,w,h, Loop);
 			}
 		}
-		numNeighborsClassic(arrB, arr, w, h, fType, out);
+		numNeighborsClassic(arrB,arr,w,h, fType, out, true);
+		
+		
 	}
 }
 
-void Cell::numNeighborsDonut(int **arr, int **arrB, int w, int h, bool fType, bool out)
+void Cell::numNeighborsDonut(int **arr, int **arrB, int w, int h, bool fType, bool out, bool Loop)
 {
 	//edges find neighbors on the opposite side of the board
 	int neighborCount = 0;
@@ -193,20 +251,30 @@ void Cell::numNeighborsDonut(int **arr, int **arrB, int w, int h, bool fType, bo
 		stable = true;
 	
 	if(!stable){
+		if(!out){	
+			if(fType) {
+				printConsole(arrB,w,h);
+			}
+			else if (!fType){
+				printFlipConsole(arrB,w,h);
+			}
+		}
+		else if (out) {
+			if(fType) {
+				printFile(arrB,w,h, Loop);
+			}
+			else if (!fType){
+				printFlipFile(arrB,w,h, Loop);
+			}
+		}
+		numNeighborsDonut(arrB,arr,w,h, fType, out, true);
 		
-		if(fType) {
-			printConsole(arrB,w,h);
-		}
-		else if (!fType){
-			printFlipConsole(arrB,w,h);
-		}
-	
-		numNeighborsDonut(arrB,arr,w,h, fType, out);
+		
 	}
 		
 }
 
-void Cell::numNeighborsMirror(int **arr, int **arrB, int w, int h, bool fType, bool out)
+void Cell::numNeighborsMirror(int **arr, int **arrB, int w, int h, bool fType, bool out, bool Loop)
 {
 	//edges find neighbors on the opposite side of the board
 	int neighborCount = 0;
@@ -275,21 +343,30 @@ void Cell::numNeighborsMirror(int **arr, int **arrB, int w, int h, bool fType, b
 		stable = true;
 	
 	if(!stable){
-		
-		if(fType) {
-			printConsole(arrB,w,h);
+		if(!out){	
+			if(fType) {
+				printConsole(arrB,w,h);
+			}
+			else if (!fType){
+				printFlipConsole(arrB,w,h);
+			}
 		}
-		else if (!fType){
-			printFlipConsole(arrB,w,h);
+		else if (out) {
+			if(fType) {
+				printFile(arrB,w,h, Loop);
+			}
+			else if (!fType){
+				printFlipFile(arrB,w,h, Loop);
+			}
 		}
-	
-			
+		numNeighborsMirror(arrB,arr,w,h, fType, out, true);
 		
-		numNeighborsDonut(arrB,arr,w,h, fType, out);
+		
 	}
 		
 	
 }
+
 
 void Cell::initialPop(int **arr, int w, int h, double d) {
 
