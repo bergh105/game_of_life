@@ -42,10 +42,10 @@ int main(int argc, char **argv) {
 
 		//set height and width (1st and second lines of file, respectively)
 		int rows, columns;
-		file >> columns;
-		cout << "columns: " << columns << endl;
 		file >> rows;
 		cout << "rows: " << rows << endl;
+		file >> columns;
+		cout << "columns: " << columns << endl;
 
 		int width, height;
 		//set width and height of board to account for border cells
