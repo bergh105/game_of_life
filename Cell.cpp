@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+
 #include <math.h>
 #include <stdlib.h>
 #include "Cell.h"
@@ -27,39 +28,105 @@ void Cell::Quit() {
 	}
 }
 
-void Cell::printConsole(int **arrB, int w, int h) {
+void Cell::printConsole(int **arrB, int w, int h, int looping) {
 
 	string gogo;
+	int bvar;
 	cout << "Press 'enter' key to continue to next generation." << endl;
 	getline(cin, gogo);
+	cout << looping << endl;
 	for(int i=1; i < (w-1); ++i) {
 		for(int j=1; j < (h-1); ++j) {
-			cout << arrB[i][j];
+			if(arrB[i][j] == 1) {
+				cout << 'X';
+			}
+			else if (arrB[i][j] == 0) {
+				cout << '-';
+			}
 		}
 		cout << endl;
 	}
 	cout << endl;
 }
 
-void Cell::printFlipConsole(int **arrB, int w, int h) {
-
+void Cell::printFlipConsole(int **arrB, int w, int h, int looping) {
+	int bvar;
 	string gogo;
 	cout << "Press 'enter' key to continue." << endl;
 	getline(cin, gogo);
-	for(int i=1; i < (w-1); ++i) {
-		for (int j=1; j < (h-1); ++j) {
-			cout << arrB[j][i];
+	cout << looping << endl;
+	for(int i=1; i < (h-1); ++i) {
+		for (int j=1; j < (w-1); ++j) {
+			if(arrB[j][i] == 1) {
+				cout << 'X';
+			}
+			else if (arrB[j][i] == 0) {
+				cout << '-';
+			}
 		}
 		cout << endl;
 	}
 	cout << endl;
 }
 
-void Cell::numNeighborsClassic(int **arr, int **arrB, int w, int h)
+void Cell::printFile(int **arrB, int w, int h, int looping)
+{	
+	ofstream myFile;
+	if (looping >= 1)
+		myFile.open("output.txt", ios_base::app);
+	if(looping == 0)
+		myFile.open("output.txt");
+	myFile << looping << endl;
+	for(int i=1; i < (w-1); ++i) {
+		for (int j=1; j < (h-1); ++j) {
+			if(arrB[i][j] == 1) {
+				myFile << 'X';
+			}
+			else if (arrB[i][j] == 0) {
+				myFile << '-';
+			}
+		}
+		myFile << endl;
+	}
+	myFile << endl;
+	
+	myFile.close();
+	
+}
+
+void Cell::printFlipFile(int **arrB, int w, int h, int looping)
+{
+	ofstream myFile;
+	if (looping >= 1)
+		myFile.open("output.txt", ios_base::app);
+	if(looping == 0)
+		myFile.open("output.txt");
+	myFile << looping << endl;
+	for(int i=1; i < (h-1); ++i) {
+		for (int j=1; j < (w-1); ++j) {
+			if(arrB[j][i] == 1) {
+				myFile << 'X';
+			}
+			else if (arrB[j][i] == 0) {
+				myFile << '-';
+			}
+		}
+		myFile << endl;
+	}
+	myFile << endl;
+	
+	myFile.close();
+	
+	
+}
+
+void Cell::numNeighborsClassic(int **arr, int **arrB, int w, int h, bool fType, bool out,int Loop)
 {
 	int neighborCount = 0;
 	int stableCount = 0;
 	bool stable = false;
+
+	
 	for(int i=1; i<(w-1); ++i) {
 		
 		for(int j=1; j<(h-1); ++j) {
@@ -86,19 +153,38 @@ void Cell::numNeighborsClassic(int **arr, int **arrB, int w, int h)
 			
 		}
 	}
-	if (stableCount == 0)
+	if (stableCount == 0){
 		stable = true;
+		
+	}
 
 	
 		
-	
-	if (!stable){
-		printConsole(arrB,w,h);
-		numNeighborsClassic(arrB, arr, w, h);
+	if(!stable){
+		if(!out){	
+			if(fType) {
+				printConsole(arrB,w,h,Loop);
+			}
+			else if (!fType){
+				printFlipConsole(arrB,w,h,Loop);
+			}
+		}
+		else if (out) {
+			if(fType) {
+				printFile(arrB,w,h, Loop);
+			}
+			else if (!fType){
+				printFlipFile(arrB,w,h, Loop);
+			}
+		}
+		Loop++;
+		numNeighborsClassic(arrB,arr,w,h, fType, out, Loop);
+		
+		
 	}
 }
 
-void Cell::numNeighborsDonut(int **arr, int **arrB, int w, int h)
+void Cell::numNeighborsDonut(int **arr, int **arrB, int w, int h, bool fType, bool out, int Loop)
 {
 	//edges find neighbors on the opposite side of the board
 	int neighborCount = 0;
@@ -167,13 +253,31 @@ void Cell::numNeighborsDonut(int **arr, int **arrB, int w, int h)
 		stable = true;
 	
 	if(!stable){
-		printConsole(arrB,w,h);
-		numNeighborsDonut(arrB,arr,w,h);
+		if(!out){	
+			if(fType) {
+				printConsole(arrB,w,h,Loop);
+			}
+			else if (!fType){
+				printFlipConsole(arrB,w,h,Loop);
+			}
+		}
+		else if (out) {
+			if(fType) {
+				printFile(arrB,w,h, Loop);
+			}
+			else if (!fType){
+				printFlipFile(arrB,w,h, Loop);
+			}
+		}
+		Loop++;
+		numNeighborsDonut(arrB,arr,w,h, fType, out, Loop);
+		
+		
 	}
 		
 }
 
-void Cell::numNeighborsMirror(int **arr, int **arrB, int w, int h)
+void Cell::numNeighborsMirror(int **arr, int **arrB, int w, int h, bool fType, bool out, int Loop)
 {
 	//edges find neighbors on the opposite side of the board
 	int neighborCount = 0;
@@ -242,8 +346,26 @@ void Cell::numNeighborsMirror(int **arr, int **arrB, int w, int h)
 		stable = true;
 	
 	if(!stable){
-		printConsole(arrB,w,h);
-		numNeighborsDonut(arrB,arr,w,h);
+		if(!out){	
+			if(fType) {
+				printConsole(arrB,w,h,Loop);
+			}
+			else if (!fType){
+				printFlipConsole(arrB,w,h,Loop);
+			}
+		}
+		else if (out) {
+			if(fType) {
+				printFile(arrB,w,h, Loop);
+			}
+			else if (!fType){
+				printFlipFile(arrB,w,h, Loop);
+			}
+		}
+		Loop++;
+		numNeighborsMirror(arrB,arr,w,h, fType, out, Loop);
+		
+		
 	}
 		
 	
@@ -276,52 +398,33 @@ void Cell::initialPop(int **arr, int w, int h, double d) {
 		}
 }
 
-void Cell::initialPop_file(int **arr, string fileName) {
+void Cell::initialPop_file(int **arr, const char* fileName) {
 
-	ifstream file;
-	file.open(fileName);
+	ifstream file(fileName);
+	//file.open(fileName);
 
+	//first two lines of file will be height and width specification
 	string titleLine1,titleLine2;
 	getline(file, titleLine1);
 	getline(file, titleLine2);
 
-	//read in file lines
-	string line1, line2, line3, line4, line5;
-	getline(file, line1);
-	getline(file, line2);
-	getline(file, line3);
-	getline(file, line4);
-	getline(file, line5);
-	for(int i=0; i<line1.length(); ++i) {
-		if(line1[i] == 'X'){
-			arr[1][i] = 1;
+	//read in file lines, populate where Xs appear
+	string line;
+	int lineNumber = 1;
+
+	while(!file.eof()) {
+		getline(file, line);
+		for(int i=0; i<line.length(); ++i) {
+			if(line[i] == 'X') {
+				arr[lineNumber][i] = 1;
+			}
+			cout << arr[lineNumber][i];
 		}
-		cout << arr[1][i] << endl;
+		cout << endl;
+		++lineNumber;
+		cout << lineNumber << endl;
 	}
-	for(int i=0; i<line2.length(); ++i) {
-		if(line2[i] == 'X') {
-			arr[2][i] = 1;
-		}
-		cout << arr[2][i] << endl;
-	}
-	for(int i=0; i<line3.length(); ++i) {
-		if(line2[i] == 'X') {
-			arr[3][i] = 1;
-		}
-		cout << arr[3][i] << endl;
-	}
-	for(int i=0; i<line4.length(); ++i) {
-		if(line2[i] == 'X') {
-			arr[4][i] = 1;
-		}
-		cout << arr[4][i] << endl;
-	}
-	for(int i=0; i<line5.length(); ++i) {
-		if(line2[i] == 'X') {
-			arr[5][i] = 1;
-		}
-		cout << arr[5][i] << endl;
-	}
+
 	file.close();
 } 
 
