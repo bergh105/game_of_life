@@ -1,5 +1,5 @@
 #include <iostream>
-#include <fstream>
+
 
 
 using namespace std;
@@ -12,19 +12,24 @@ class Cell
 		
 		double popDensity;
 		int numCells;
-		int numNeighborsClassic(int **arr, int **arrB, size_t w, size_t h);
-		void ReadIn();
-		void turn(char **bA, char **bB);
+		
+		
+		
 
 		void Quit();
-		void printFlipConsole(int **arrB, int w, int h);
-		void printConsole(int **arrB, int w, int h);
+		void printFlipConsole(int **arrB, int w, int h, int looping);
+		void printConsole(int **arrB, int w, int h, int looping);
 
-		void numNeighborsClassic(int **arr, int **arrB, int w, int h);
-		void numNeighborsMirror(int **arr, int **arrB, int w, int h);
-		void numNeighborsDonut(int **arr, int **arrB, int w, int h);
+		void printFlipFile(int **arrB, int w, int h, int looping);
+		void printFile(int **arrB, int w, int h, int looping);
+
+		void numNeighborsClassic(int **arr, int **arrB, int w, int h, bool fType, bool out, int Loop);
+		void numNeighborsMirror(int **arr, int **arrB, int w, int h, bool fType, bool out, int Loop);
+		void numNeighborsDonut(int **arr, int **arrB, int w, int h, bool fType, bool out, int Loop);
 		
 		void initialPop(int **arr, int w, int h, double d);
-		void initialPop_file(int **arr, string fileName);
+		void initialPop_file(int **arr, const char* fileName);
+
+};
 
 };
